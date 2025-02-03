@@ -1,0 +1,53 @@
+@startuml
+
+package "ch.etmles.payroll" {
+    class PayrollApplication {
+        +main(String[): void
+    }
+
+    "PayrollApplication" --> "SpringApplication"
+
+    package "Controllers" {
+        class "EmployeeController" {
+            +EmployeeController(EmployeeRepository)
+            +all(): Employee[]
+            +newEmployee(Employee): Employee
+            +one(Long): Employee
+            +replaceEmployee(Employee, Long): Employee
+            +deleteEmployee(Long): void
+        }
+
+        class "EmployeeNotFoundAdvice" {
+            +employeeNotFoundHandler(EmployeeNotFoundException): String
+        }
+
+        class "EmployeeNotFoundException"<extends RuntimeException> {
+            +EmployeeNotFoundException(Long)
+        }
+    }
+
+    package "Entities" {
+        class "Employee" {
+            (...)
+        }
+    }
+
+    package "Repositories" {
+        interface "EmployeeRepository"<extends JARepository<Employee, Long>>
+        class "LoadDatabase" {
+            initDatabase(EmployeeRepository): CommandLineRunner
+        }
+    }
+
+    "EmployeeController" --> "EmployeeRepository"
+    "EmployeeController" --> "Employee"
+    "EmployeeController" --> "EmployeeNotFoundException"
+    "EmployeeNotFoundAdvice" --> "EmployeeNotFoundException"
+
+    "EmployeeRepository" --> "Employee"
+
+    "LoadDatabase" --> "EmployeeRepository"
+    "LoadDatabase" --> "Employee"
+}
+
+@enduml
