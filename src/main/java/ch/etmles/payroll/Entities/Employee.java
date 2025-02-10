@@ -1,5 +1,6 @@
 package ch.etmles.payroll.Entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -11,13 +12,15 @@ public class Employee {
 
     private @Id
     @GeneratedValue Long id;
+    private @Column(unique = true) String email;
     private String name;
     private String firstname;
     private String role;
 
     public Employee(){}
 
-    public Employee(String name, String firstname, String role){
+    public Employee(String email, String name, String firstname, String role){
+        this.setEmail(email);
         this.setName(name);
         this.setFirstname(firstname);
         this.setRole(role);
@@ -30,6 +33,12 @@ public class Employee {
     public void setId(Long id){
         this.id = id;
     }
+
+    public String getEmail(){
+        return this.email;
+    }
+
+    public void setEmail(String email){ this.email = email; }
 
     public String getName(){
         return this.name;
@@ -59,17 +68,17 @@ public class Employee {
             return true;
         if(!(o instanceof Employee employee))
             return false;
-        return Objects.equals(this.id, employee.id) && Objects.equals(this.name, employee.name)
+        return Objects.equals(this.id, employee.id) && Objects.equals(this.email, employee.email) && Objects.equals(this.name, employee.name)
                 && Objects.equals(this.firstname, employee.firstname) && Objects.equals(this.role, employee.role);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.id, this.name, this.firstname, this.role);
+        return Objects.hash(this.id, this.email, this.name, this.firstname, this.role);
     }
 
     @Override
     public String toString(){
-        return "Employee{" + "id=" + this.getID() + ", name='" + this.getName() + '\'' + ", firstname='" + this.getFirstname() + '\'' + ", role='" + this.getRole() + '\'' + '}';
+        return "Employee{" + "id=" + this.getID() + ", email='" + this.getEmail() + '\'' + ", name='" + this.getName() + '\'' + ", firstname='" + this.getFirstname() + '\'' + ", role='" + this.getRole() + '\'' + '}';
     }
 }
