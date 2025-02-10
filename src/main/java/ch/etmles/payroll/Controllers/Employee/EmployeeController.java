@@ -1,4 +1,4 @@
-package ch.etmles.payroll.Controllers;
+package ch.etmles.payroll.Controllers.Employee;
 
 import ch.etmles.payroll.Entities.Employee;
 import ch.etmles.payroll.Repositories.EmployeeRepository;
