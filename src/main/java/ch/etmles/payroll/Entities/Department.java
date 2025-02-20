@@ -1,10 +1,8 @@
 package ch.etmles.payroll.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +11,8 @@ public class Department {
     private @Id
     @GeneratedValue Long id;
     private @Column(unique = true) String name;
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    private List<Employee> employees;
 
     public Department(){}
 
@@ -53,6 +53,6 @@ public class Department {
 
     @Override
     public String toString(){
-        return "Employee{" + "id=" + this.getID() + ", name='" + this.getName() + '\'' + '}';
+        return "Department{" + "id=" + this.getID() + ", name='" + this.getName() + '\'' + '}';
     }
 }

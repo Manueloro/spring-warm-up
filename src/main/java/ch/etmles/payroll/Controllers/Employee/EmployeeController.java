@@ -3,6 +3,7 @@ package ch.etmles.payroll.Controllers.Employee;
 import ch.etmles.payroll.Controllers.Exceptions.RessourceDeleteNotFound;
 import ch.etmles.payroll.Controllers.Exceptions.RessourceIDNotFound;
 import ch.etmles.payroll.Entities.Employee;
+import ch.etmles.payroll.Repositories.DepartmentRepository;
 import ch.etmles.payroll.Repositories.EmployeeRepository;
 import org.springframework.web.bind.annotation.*;
 
