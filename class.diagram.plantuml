@@ -9,17 +9,19 @@ package "ch.etmles.payroll" {
 
     package "Controllers" {
         class "EmployeeController" {
-            {static}-ressourceName: String
+            {static}+ressourceName: String
             +EmployeeController(EmployeeRepository)
             +all(): Employee[]
             +newEmployee(Employee): Employee
             +one(Long): Employee
             +replaceEmployee(Employee, Long): Employee
             +deleteEmployee(Long): void
+            +joinDepartment(Long, Long): void
+            +leaveDepartment(Long): void
         }
 
         class "DepartmentController" {
-            {static}-ressourceName: String
+            {static}+ressourceName: String
             +DepartmentController(DepartmentRepository)
             +all(): Department[]
             +newEmployee(Department): Department
@@ -47,7 +49,9 @@ package "ch.etmles.payroll" {
         }
     }
 
-    "Controllers" --> "GenericExceptions"
+    package "Exceptions" {}
+
+    "Controllers" --> "Exceptions"
 
     "EmployeeController" --> "EmployeeRepository"
     "EmployeeController" --> "Employee"

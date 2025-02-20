@@ -1,5 +1,6 @@
 package ch.etmles.payroll.Repositories;
 
+import ch.etmles.payroll.Entities.Department;
 import ch.etmles.payroll.Entities.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +13,18 @@ public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(EmployeeRepository repository){
+    CommandLineRunner initEmployees(EmployeeRepository repository){
         return args->{
-            log.info("Preloading " + repository.save(new Employee("bilbo.baggins@ringlord.com", "Baggins", "Bilbo", "burglar")));
-            log.info("Preloading " + repository.save(new Employee("frodo.baggins@ringlord.com", "Baggins", "Frodo", "thief")));
+            log.info("Preloading " + repository.save(new Employee("bilbo.baggins@ringlord.com", "Baggins", "Bilbo", "burglar", null)));
+            log.info("Preloading " + repository.save(new Employee("frodo.baggins@ringlord.com", "Baggins", "Frodo", "thief", null)));
+        };
+    }
+
+    @Bean
+    CommandLineRunner initDepartments(DepartmentRepository repository){
+        return args->{
+            log.info("Preloading " + repository.save(new Department("SIG")));
+            log.info("Preloading " + repository.save(new Department("SRS")));
         };
     }
 }

@@ -1,9 +1,6 @@
 package ch.etmles.payroll.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -16,14 +13,18 @@ public class Employee {
     private String name;
     private String firstname;
     private String role;
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     public Employee(){}
 
-    public Employee(String email, String name, String firstname, String role){
+    public Employee(String email, String name, String firstname, String role, Department department){
         this.setEmail(email);
         this.setName(name);
         this.setFirstname(firstname);
         this.setRole(role);
+        this.setDepartment(department);
     }
 
     public Long getID(){
@@ -62,23 +63,39 @@ public class Employee {
         this.role = role;
     }
 
+    public Department getDepartment() { return this.department; }
+
+    public void setDepartment(Department department) { this.department = department; }
+
+
     @Override
     public boolean equals(Object o){
         if(this == o)
             return true;
         if(!(o instanceof Employee employee))
             return false;
-        return Objects.equals(this.id, employee.id) && Objects.equals(this.email, employee.email) && Objects.equals(this.name, employee.name)
-                && Objects.equals(this.firstname, employee.firstname) && Objects.equals(this.role, employee.role);
+        return Objects.equals(this.id, employee.id)
+                && Objects.equals(this.email, employee.email)
+                && Objects.equals(this.name, employee.name)
+                && Objects.equals(this.firstname, employee.firstname)
+                && Objects.equals(this.role, employee.role)
+                && Objects.equals(this.department, employee.department);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.id, this.email, this.name, this.firstname, this.role);
+        return Objects.hash(this.id, this.email, this.name, this.firstname, this.role, this.department);
     }
 
     @Override
     public String toString(){
-        return "Employee{" + "id=" + this.getID() + ", email='" + this.getEmail() + '\'' + ", name='" + this.getName() + '\'' + ", firstname='" + this.getFirstname() + '\'' + ", role='" + this.getRole() + '\'' + '}';
+        return "Employee{"
+                + "id=" + this.getID()
+                + ", email='" + this.getEmail() + '\''
+                + ", name='" + this.getName()+ '\''
+                + ", firstname='" + this.getFirstname() + '\''
+                + ", role='" + this.getRole() + '\''
+                + ", department='" + this.getDepartment() + '\''
+                + '}';
     }
 }
