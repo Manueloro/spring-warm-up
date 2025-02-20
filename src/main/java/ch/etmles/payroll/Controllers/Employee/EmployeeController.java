@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController()
+@RequestMapping("/employees")
 public class EmployeeController {
-
+    private final String ressourceName = "employee";
     private final EmployeeRepository repository;
 
     EmployeeController(EmployeeRepository repository){
@@ -18,7 +19,7 @@ public class EmployeeController {
     /* curl sample :
     curl -i localhost:8080/employees
     */
-    @GetMapping("/employees")
+    @GetMapping()
     List<Employee> all(){
         return repository.findAll();
     }
@@ -28,7 +29,7 @@ public class EmployeeController {
         -H "Content-type:application/json" ^
         -d "{\"email\": \"george.russel@world.com\", \"name\": \"Russel\", \"firstname\": \"George\", \"role\": \"gardener\"}"
     */
-    @PostMapping("/employees")
+    @PostMapping()
     Employee newEmployee(@RequestBody Employee newEmployee){
         return repository.save(newEmployee);
     }
@@ -36,10 +37,10 @@ public class EmployeeController {
     /* curl sample :
     curl -i localhost:8080/employees/1
     */
-    @GetMapping("/employees/{id}")
+    @GetMapping("/{id}")
     Employee one(@PathVariable Long id){
         return repository.findById(id)
-                .orElseThrow(() -> new EmployeeNotFoundException(id));
+                .orElseThrow(() -> new RessourceIDNotFound(id, ressourceName));
     }
 
     /* curl sample :
@@ -47,7 +48,7 @@ public class EmployeeController {
         -H "Content-type:application/json" ^
         -d "{\"name\": \"Samwise Bing\", \"role\": \"peer-to-peer\"}"
      */
-    @PutMapping("/employees/{id}")
+    @PutMapping("/{id}")
     Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
         return repository.findById(id)
                 .map(employee -> {
@@ -66,12 +67,12 @@ public class EmployeeController {
     /* curl sample :
     curl -i -X DELETE localhost:8080/employees/2
     */
-    @DeleteMapping("/employees/{id}")
+    @DeleteMapping("/{id}")
     void deleteEmployee(@PathVariable Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
         } else {
-            throw new EmployeeDeleteNotFoundException(id);
+            throw new RessourceDeleteNotFound(id, ressourceName);
         }
     }
 }
