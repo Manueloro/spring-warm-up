@@ -4,6 +4,7 @@ import ch.etmles.payroll.Controllers.Exceptions.RessourceDeleteNotFound;
 import ch.etmles.payroll.Controllers.Exceptions.RessourceIDNotFound;
 import ch.etmles.payroll.Entities.Department;
 import ch.etmles.payroll.Repositories.DepartmentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,12 +12,10 @@ import java.util.List;
 @RestController()
 @RequestMapping("/departments")
 public class DepartmentController {
-    private final String ressourceName = "department";
-    private final DepartmentRepository repository;
+    public static final String RESSOURCE_NAME = "department";
 
-    DepartmentController(DepartmentRepository repository){
-        this.repository = repository;
-    }
+    @Autowired
+    private DepartmentRepository repository;
 
     /* curl sample :
     curl -i localhost:8080/departments
@@ -42,7 +41,7 @@ public class DepartmentController {
     @GetMapping("/{id}")
     Department one(@PathVariable Long id){
         return repository.findById(id)
-                .orElseThrow(() -> new RessourceIDNotFound(id, ressourceName));
+                .orElseThrow(() -> new RessourceIDNotFound(id, RESSOURCE_NAME));
     }
 
     /* curl sample :
@@ -71,7 +70,7 @@ public class DepartmentController {
         if (repository.existsById(id)) {
             repository.deleteById(id);
         } else {
-            throw new RessourceDeleteNotFound(id, ressourceName);
+            throw new RessourceDeleteNotFound(id, RESSOURCE_NAME);
         }
     }
 }
