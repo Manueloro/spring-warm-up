@@ -9,6 +9,7 @@ package "ch.etmles.payroll" {
 
     package "Controllers" {
         class "EmployeeController" {
+            {static}-ressourceName: String
             +EmployeeController(EmployeeRepository)
             +all(): Employee[]
             +newEmployee(Employee): Employee
@@ -17,12 +18,14 @@ package "ch.etmles.payroll" {
             +deleteEmployee(Long): void
         }
 
-        class "EmployeeNotFoundAdvice" {
-            +employeeNotFoundHandler(EmployeeNotFoundException): String
-        }
-
-        class "EmployeeNotFoundException"<extends RuntimeException> {
-            +EmployeeNotFoundException(Long)
+        class "DepartmentController" {
+            {static}-ressourceName: String
+            +DepartmentController(DepartmentRepository)
+            +all(): Department[]
+            +newEmployee(Department): Department
+            +one(Long): Department
+            +replaceDepartment(Department, Long): Department
+            +deleteDepartment(Long): void
         }
     }
 
@@ -30,24 +33,35 @@ package "ch.etmles.payroll" {
         class "Employee" {
             (...)
         }
+        class "Department"{
+            (...)
+        }
     }
 
     package "Repositories" {
         interface "EmployeeRepository"<extends JARepository<Employee, Long>>
+        interface "DepartmentRepository"<extends JARepository<Department, Long>>
         class "LoadDatabase" {
-            initDatabase(EmployeeRepository): CommandLineRunner
+            initEmployees(EmployeeRepository): CommandLineRunner
+            initEmployees(DepartmentRepository): CommandLineRunner
         }
     }
 
+    "Controllers" --> "GenericExceptions"
+
     "EmployeeController" --> "EmployeeRepository"
     "EmployeeController" --> "Employee"
-    "EmployeeController" --> "EmployeeNotFoundException"
-    "EmployeeNotFoundAdvice" --> "EmployeeNotFoundException"
+
+    "DepartmentController" --> "DepartmentRepository"
+    "DepartmentController" --> "Department"
 
     "EmployeeRepository" --> "Employee"
+    "DepartmentRepository" --> "Department"
 
     "LoadDatabase" --> "EmployeeRepository"
     "LoadDatabase" --> "Employee"
+    "LoadDatabase" --> "DepartmentRepository"
+    "LoadDatabase" --> "Department"
 }
 
 @enduml
