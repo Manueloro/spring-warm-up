@@ -43,7 +43,7 @@ package "ch.etmles.payroll" {
         interface "DepartmentRepository"<extends JARepository<Department, Long>>
         class "LoadDatabase" {
             initEmployees(EmployeeRepository): CommandLineRunner
-            initEmployees(DepartmentRepository): CommandLineRunner
+            initDepartments(DepartmentRepository): CommandLineRunner
         }
     }
 
