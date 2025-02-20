@@ -1,0 +1,71 @@
+@startuml
+
+package "ch.etmles.payroll" {
+    class PayrollApplication {
+        +main(String[): void
+    }
+
+    "PayrollApplication" --> "SpringApplication"
+
+    package "Controllers" {
+        class "EmployeeController" {
+            {static}+ressourceName: String
+            +EmployeeController(EmployeeRepository)
+            +all(): Employee[]
+            +newEmployee(Employee): Employee
+            +one(Long): Employee
+            +replaceEmployee(Employee, Long): Employee
+            +deleteEmployee(Long): void
+            +joinDepartment(Long, Long): void
+            +leaveDepartment(Long): void
+        }
+
+        class "DepartmentController" {
+            {static}+ressourceName: String
+            +DepartmentController(DepartmentRepository)
+            +all(): Department[]
+            +newEmployee(Department): Department
+            +one(Long): Department
+            +replaceDepartment(Department, Long): Department
+            +deleteDepartment(Long): void
+        }
+    }
+
+    package "Entities" {
+        class "Employee" {
+            (...)
+        }
+        class "Department"{
+            (...)
+        }
+    }
+
+    package "Repositories" {
+        interface "EmployeeRepository"<extends JARepository<Employee, Long>>
+        interface "DepartmentRepository"<extends JARepository<Department, Long>>
+        class "LoadDatabase" {
+            initEmployees(EmployeeRepository): CommandLineRunner
+            initDepartments(DepartmentRepository): CommandLineRunner
+        }
+    }
+
+    package "Exceptions" {}
+
+    "Controllers" --> "Exceptions"
+
+    "EmployeeController" --> "EmployeeRepository"
+    "EmployeeController" --> "Employee"
+
+    "DepartmentController" --> "DepartmentRepository"
+    "DepartmentController" --> "Department"
+
+    "EmployeeRepository" --> "Employee"
+    "DepartmentRepository" --> "Department"
+
+    "LoadDatabase" --> "EmployeeRepository"
+    "LoadDatabase" --> "Employee"
+    "LoadDatabase" --> "DepartmentRepository"
+    "LoadDatabase" --> "Department"
+}
+
+@enduml
