@@ -1,22 +1,23 @@
-package ch.etmles.payroll.Entities;
+package ch.etmles.payroll.Department;
 
+import ch.etmles.payroll.Employee.EmployeeEntity;
 import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Department {
+public class DepartmentEntity {
 
     private @Id
     @GeneratedValue Long id;
     private @Column(unique = true) String name;
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
-    private List<Employee> employees;
+    private List<EmployeeEntity> employees;
 
-    public Department(){}
+    public DepartmentEntity(){}
 
-    public Department(String name){
+    public DepartmentEntity(String name){
         this.setName(name);
     }
 
@@ -41,7 +42,7 @@ public class Department {
     public boolean equals(Object o){
         if(this == o)
             return true;
-        if(!(o instanceof Department employee))
+        if(!(o instanceof DepartmentEntity employee))
             return false;
         return Objects.equals(this.id, employee.id) && Objects.equals(this.name, employee.name);
     }

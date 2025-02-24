@@ -1,11 +1,12 @@
-package ch.etmles.payroll.Entities;
+package ch.etmles.payroll.Employee;
 
+import ch.etmles.payroll.Department.DepartmentEntity;
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
-public class Employee {
+public class EmployeeEntity {
 
     private @Id
     @GeneratedValue Long id;
@@ -15,11 +16,11 @@ public class Employee {
     private String role;
     @ManyToOne
     @JoinColumn(name = "department_id")
-    private Department department;
+    private DepartmentEntity department;
 
-    public Employee(){}
+    public EmployeeEntity(){}
 
-    public Employee(String email, String name, String firstname, String role, Department department){
+    public EmployeeEntity(String email, String name, String firstname, String role, DepartmentEntity department){
         this.setEmail(email);
         this.setName(name);
         this.setFirstname(firstname);
@@ -63,16 +64,16 @@ public class Employee {
         this.role = role;
     }
 
-    public Department getDepartment() { return this.department; }
+    public DepartmentEntity getDepartment() { return this.department; }
 
-    public void setDepartment(Department department) { this.department = department; }
+    public void setDepartment(DepartmentEntity department) { this.department = department; }
 
 
     @Override
     public boolean equals(Object o){
         if(this == o)
             return true;
-        if(!(o instanceof Employee employee))
+        if(!(o instanceof EmployeeEntity employee))
             return false;
         return Objects.equals(this.id, employee.id)
                 && Objects.equals(this.email, employee.email)
