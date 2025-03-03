@@ -46,9 +46,8 @@ package "ch.etmles.payroll" {
             +getById(Long): EmployeeEntity
             +create(EmployeeEntity): EmployeeEntity
             +update(Long, EmployeeEntity): EmployeeEntity
+            +patch(Long, Map<String, Object>): EmployeeEntity
             +delete(Long): void
-            +joinDepartment(Long, Long): void
-            +leaveDepartment(Long): void
         }
 
         class "EmployeeController" {
@@ -56,9 +55,8 @@ package "ch.etmles.payroll" {
             +newEmployee(EmployeeEntity): EmployeeEntity
             +one(Long): EmployeeEntity
             +replaceEmployee(EmployeeEntity, Long): EmployeeEntity
+            +editEmployee(EmployeeEntity, Long): EmployeeEntity
             +deleteEmployee(Long): void
-            +joinDepartment(Long, Long): void
-            +leaveDepartment(Long): void
         }
 
         class "EmployeeEntity" {
