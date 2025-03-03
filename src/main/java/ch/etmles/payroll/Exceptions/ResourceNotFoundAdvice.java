@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class RessourceNotFoundAdvice {
+public class ResourceNotFoundAdvice {
 
     @ResponseBody
-    @ExceptionHandler(RessourceIDNotFound.class)
+    @ExceptionHandler(ResourceIDNotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String IDNotFound(RessourceIDNotFound ex){
+    String IDNotFound(ResourceIDNotFound ex){
         return ex.getMessage();
     }
 
     @ResponseBody
-    @ExceptionHandler(RessourceDeleteNotFound.class)
+    @ExceptionHandler(ResourceDeleteNotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String deleteNotFound(RessourceDeleteNotFound ex){
+    String deleteNotFound(ResourceDeleteNotFound ex){
         return ex.getMessage();
     }
 }
