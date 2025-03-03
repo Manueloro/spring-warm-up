@@ -1,7 +1,5 @@
 package ch.etmles.payroll.Department;
 
-import ch.etmles.payroll.Exceptions.RessourceDeleteNotFound;
-import ch.etmles.payroll.Exceptions.RessourceIDNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,17 +8,16 @@ import java.util.List;
 @RestController()
 @RequestMapping("/departments")
 public class DepartmentController {
-    public static final String RESSOURCE_NAME = "department";
 
     @Autowired
-    private DepartmentRepository repository;
+    private DepartmentService departmentService;
 
     /* curl sample :
     curl -i localhost:8080/departments
     */
     @GetMapping()
     List<DepartmentEntity> all(){
-        return repository.findAll();
+        return departmentService.getAll();
     }
 
     /* curl sample :
@@ -30,7 +27,7 @@ public class DepartmentController {
     */
     @PostMapping()
     DepartmentEntity newDepartment(@RequestBody DepartmentEntity newDepartment){
-        return repository.save(newDepartment);
+        return departmentService.create(newDepartment);
     }
 
     /* curl sample :
@@ -38,8 +35,7 @@ public class DepartmentController {
     */
     @GetMapping("/{id}")
     DepartmentEntity one(@PathVariable Long id){
-        return repository.findById(id)
-                .orElseThrow(() -> new RessourceIDNotFound(id, RESSOURCE_NAME));
+        return departmentService.getById(id);
     }
 
     /* curl sample :
@@ -49,15 +45,7 @@ public class DepartmentController {
      */
     @PutMapping("/{id}")
     DepartmentEntity replaceDepartment(@RequestBody DepartmentEntity newDepartment, @PathVariable Long id) {
-        return repository.findById(id)
-                .map(department -> {
-                    department.setName(newDepartment.getName());
-                    return repository.save(department);
-                })
-                .orElseGet(() -> {
-                    newDepartment.setId(id);
-                    return repository.save(newDepartment);
-                });
+        return departmentService.update(id, newDepartment);
     }
 
     /* curl sample :
@@ -65,10 +53,6 @@ public class DepartmentController {
     */
     @DeleteMapping("/{id}")
     void deleteDepartment(@PathVariable Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-        } else {
-            throw new RessourceDeleteNotFound(id, RESSOURCE_NAME);
-        }
+        departmentService.delete(id);
     }
 }
