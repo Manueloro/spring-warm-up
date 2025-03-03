@@ -7,65 +7,68 @@ package "ch.etmles.payroll" {
 
     "PayrollApplication" --> "SpringApplication"
 
-    package "Controllers" {
+    package "Department" {
+        class "DepartmentController" {
+            {static}+ressourceName: String
+            +all(): DepartmentEntity[]
+            +newEmployee(DepartmentEntity): DepartmentEntity
+            +one(Long): DepartmentEntity
+            +replaceDepartment(DepartmentEntity, Long): DepartmentEntity
+            +deleteDepartment(Long): void
+        }
+
+        class "DepartmentEntity"{
+            (...)
+        }
+
+        interface "DepartmentRepository"<extends JARepository<DepartmentEntity, Long>>
+
+        "DepartmentController" --> "DepartmentRepository"
+        "DepartmentController" --> "DepartmentEntity"
+    }
+
+    "DepartmentController" --> "Exceptions"
+
+    package "Employee" {
         class "EmployeeController" {
             {static}+ressourceName: String
-            +EmployeeController(EmployeeRepository)
-            +all(): Employee[]
-            +newEmployee(Employee): Employee
-            +one(Long): Employee
-            +replaceEmployee(Employee, Long): Employee
+            +all(): EmployeeEntity[]
+            +newEmployee(EmployeeEntity): EmployeeEntity
+            +one(Long): EmployeeEntity
+            +replaceEmployee(EmployeeEntity, Long): EmployeeEntity
             +deleteEmployee(Long): void
             +joinDepartment(Long, Long): void
             +leaveDepartment(Long): void
         }
 
-        class "DepartmentController" {
-            {static}+ressourceName: String
-            +DepartmentController(DepartmentRepository)
-            +all(): Department[]
-            +newEmployee(Department): Department
-            +one(Long): Department
-            +replaceDepartment(Department, Long): Department
-            +deleteDepartment(Long): void
-        }
-    }
-
-    package "Entities" {
-        class "Employee" {
+        class "EmployeeEntity" {
             (...)
         }
-        class "Department"{
-            (...)
-        }
+
+        class "EmployeeAdvice"
+        exception "EmployeeNotInDepartment"
+        exception "EmployeeAlreadyInDepartment"
+
+        interface "EmployeeRepository"<extends JARepository<EmployeeEntity, Long>>
+
+        "EmployeeController" --> "EmployeeRepository"
+        "EmployeeController" --> "EmployeeEntity"
+        "EmployeeController" --> "EmployeeNotInDepartment"
+        "EmployeeController" --> "EmployeeAlreadyInDepartment"
     }
 
-    package "Repositories" {
-        interface "EmployeeRepository"<extends JARepository<Employee, Long>>
-        interface "DepartmentRepository"<extends JARepository<Department, Long>>
-        class "LoadDatabase" {
-            initEmployees(EmployeeRepository): CommandLineRunner
-            initDepartments(DepartmentRepository): CommandLineRunner
-        }
+    "EmployeeController" --> "Exceptions"
+
+    package "Exceptions" {
+        exception "ResourceIDNotFound"
+        exception "ResourceDeleteNotFound"
+        class "ResourceNotFoundAdvice"
     }
 
-    package "Exceptions" {}
-
-    "Controllers" --> "Exceptions"
-
-    "EmployeeController" --> "EmployeeRepository"
-    "EmployeeController" --> "Employee"
-
-    "DepartmentController" --> "DepartmentRepository"
-    "DepartmentController" --> "Department"
-
-    "EmployeeRepository" --> "Employee"
-    "DepartmentRepository" --> "Department"
-
-    "LoadDatabase" --> "EmployeeRepository"
-    "LoadDatabase" --> "Employee"
-    "LoadDatabase" --> "DepartmentRepository"
-    "LoadDatabase" --> "Department"
+    class "LoadDatabase" {
+        initEmployees(EmployeeRepository): CommandLineRunner
+        initDepartments(DepartmentRepository): CommandLineRunner
+    }
 }
 
 @enduml
