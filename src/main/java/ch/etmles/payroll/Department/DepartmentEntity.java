@@ -21,7 +21,7 @@ public class DepartmentEntity {
         this.setName(name);
     }
 
-    public Long getID(){
+    public Long getId(){
         return this.id;
     }
 
@@ -42,18 +42,18 @@ public class DepartmentEntity {
     public boolean equals(Object o){
         if(this == o)
             return true;
-        if(!(o instanceof DepartmentEntity employee))
+        if(!(o instanceof DepartmentEntity department))
             return false;
-        return Objects.equals(this.id, employee.id) && Objects.equals(this.name, employee.name);
+        return Objects.equals(this.id, department.id) && Objects.equals(this.name, department.name) && Objects.equals(this.employees, department.employees);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.id, this.name);
+        return Objects.hash(this.id, this.name, this.employees);
     }
 
     @Override
     public String toString(){
-        return "Department{" + "id=" + this.getID() + ", name='" + this.getName() + '\'' + '}';
+        return "Department{" + "id=" + this.getId() + ", name='" + this.getName() + '\'' + '}';
     }
 }
