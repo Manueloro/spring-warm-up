@@ -8,8 +8,16 @@ package "ch.etmles.payroll" {
     "PayrollApplication" --> "SpringApplication"
 
     package "Department" {
-        class "DepartmentController" {
+        class "DepartmentService" {
             {static}+ressourceName: String
+            +getAll(): DepartmentEntity[]
+            +getById(Long): DepartmentEntity
+            +create(DepartmentEntity): DepartmentEntity
+            +update(Long, DepartmentEntity): DepartmentEntity
+            +delete(Long): void
+        }
+
+        class "DepartmentController" {
             +all(): DepartmentEntity[]
             +newEmployee(DepartmentEntity): DepartmentEntity
             +one(Long): DepartmentEntity
@@ -23,15 +31,27 @@ package "ch.etmles.payroll" {
 
         interface "DepartmentRepository"<extends JARepository<DepartmentEntity, Long>>
 
-        "DepartmentController" --> "DepartmentRepository"
+        "DepartmentController" --> "DepartmentService"
         "DepartmentController" --> "DepartmentEntity"
+        "DepartmentService" --> "DepartmentRepository"
+        "DepartmentService" --> "DepartmentEntity"
     }
 
-    "DepartmentController" --> "Exceptions"
+    "DepartmentService" --> "Exceptions"
 
     package "Employee" {
-        class "EmployeeController" {
+        class "EmployeeService" {
             {static}+ressourceName: String
+            +getAll(): EmployeeEntity[]
+            +getById(Long): EmployeeEntity
+            +create(EmployeeEntity): EmployeeEntity
+            +update(Long, EmployeeEntity): EmployeeEntity
+            +delete(Long): void
+            +joinDepartment(Long, Long): void
+            +leaveDepartment(Long): void
+        }
+
+        class "EmployeeController" {
             +all(): EmployeeEntity[]
             +newEmployee(EmployeeEntity): EmployeeEntity
             +one(Long): EmployeeEntity
@@ -51,13 +71,17 @@ package "ch.etmles.payroll" {
 
         interface "EmployeeRepository"<extends JARepository<EmployeeEntity, Long>>
 
-        "EmployeeController" --> "EmployeeRepository"
+        "EmployeeController" --> "EmployeeService"
         "EmployeeController" --> "EmployeeEntity"
-        "EmployeeController" --> "EmployeeNotInDepartment"
-        "EmployeeController" --> "EmployeeAlreadyInDepartment"
+        "EmployeeService" --> "EmployeeRepository"
+        "EmployeeService" -> "EmployeeEntity"
+        "EmployeeService" --> "EmployeeNotInDepartment"
+        "EmployeeService" --> "EmployeeAlreadyInDepartment"
+
+        "EmployeeService" --> "DepartmentService"
     }
 
-    "EmployeeController" --> "Exceptions"
+    "EmployeeService" --> "Exceptions"
 
     package "Exceptions" {
         exception "ResourceIDNotFound"
