@@ -1,0 +1,24 @@
+@startuml
+
+actor Client
+participant EmployeeController
+participant EmployeeService
+participant EmployeeRepository
+entity EmployeeEntity
+database Database
+
+activate Client
+
+Client -> EmployeeController : [GET] /employees
+EmployeeController -> EmployeeService : getAll(): Employee[]
+EmployeeService -> EmployeeRepository : findAll(): Employee[]
+activate EmployeeRepository
+EmployeeRepository -> Database : get all employees from DB
+Database -> EmployeeRepository : return employees data
+EmployeeRepository -> EmployeeEntity : employees data to POJO
+EmployeeEntity -> EmployeeRepository : return Employee[]
+EmployeeRepository -> EmployeeService : return Employee[]
+deactivate EmployeeRepository
+EmployeeService -> EmployeeController : return Employee[]
+EmployeeController -> Client : return Employee[] as JSON
+@enduml
