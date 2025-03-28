@@ -13,12 +13,14 @@ import java.util.Map;
 @Service
 public class EmployeeService {
     public static final String RESSOURCE_NAME = "employee";
+    private final EmployeeRepository employeeRepository;
+    private final DepartmentService departmentService;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
-
-    @Autowired
-    private DepartmentService departmentService;
+    public EmployeeService(EmployeeRepository employeeRepository, DepartmentService departmentService) {
+        this.employeeRepository = employeeRepository;
+        this.departmentService = departmentService;
+    }
 
     public List<EmployeeEntity> getAll() {
         return employeeRepository.findAll();

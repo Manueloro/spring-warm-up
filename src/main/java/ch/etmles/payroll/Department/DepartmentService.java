@@ -10,9 +10,12 @@ import java.util.List;
 @Service
 public class DepartmentService {
     public static final String RESSOURCE_NAME = "department";
+    private final DepartmentRepository departmentRepository;
 
     @Autowired
-    private DepartmentRepository departmentRepository;
+    public DepartmentService(DepartmentRepository departmentRepository) {
+        this.departmentRepository = departmentRepository;
+    }
 
     public List<DepartmentEntity> getAll() {
         return departmentRepository.findAll();

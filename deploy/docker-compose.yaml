@@ -2,6 +2,6 @@ services:
   spring-boot:
     container_name: spring-boot
     build:
-      context: .
+      context: ..
     ports:
       - "8080:8080"
